@@ -36,5 +36,6 @@
   },
   "devDependencies": {
     "cross-env": "^5.1.1"
-  }
+  },
+  "graphqlForVSCode.nodePath": "server/node_modules"
 }

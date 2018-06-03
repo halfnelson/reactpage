@@ -14,14 +14,12 @@ DataSource: {
 CmsComponent: {
     ReactComponent: {
         ComponentClass: string
-        PropBinding: PropBindingConfig (propertyName, Data) =>   Mapping of propertyName=>datasource path
+        PropBinding[]: PropBindingConfig (propertyName, Data) =>   Mapping of propertyName=>datasource path. Maybe with https://github.com/mmckegg/json-query
     }
     DataSource 
 }
 
-ComponentConfig: {
-    Children: Array of ChildComponents
-}
+
 
 
 

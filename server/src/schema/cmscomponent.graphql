@@ -1,0 +1,5 @@
+scalar Json
+type CmsComponent {
+  id: String
+  props: Json
+}

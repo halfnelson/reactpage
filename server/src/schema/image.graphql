@@ -1,0 +1,5 @@
+type Image {
+    path: String
+    name: String
+    title: String
+}

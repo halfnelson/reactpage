@@ -1,0 +1,7 @@
+type Company {
+  id: Int!
+  name: String
+  phone: String
+  address: String
+  centres: [Centre]
+}

@@ -1,0 +1,10 @@
+type Centre {
+  id: Int!
+  name: String
+  phone: String
+  address: String
+  openingHours: String
+  url: String
+  email: String
+  image: Image
+}
