@@ -1,0 +1,5 @@
+type Channel {
+  id: ID!                # "!" denotes a required field
+  name: String
+  thingy1: String
+}

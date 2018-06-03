@@ -1,12 +1,12 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import './index.css';
-const logo = require('./logo.svg');
+const images = require('./*.svg');
 
 const App = () => (
   <div className="App">
-    <img className="App-logo" src={logo} alt="React" />
-    <h1 className="App-Title">Hello Parcel x React x TypeScript</h1>
+    <img className="App-logo" src={images.logo} alt="React" />
+    <h1 className="App-Title">Hello Parcel xx React x TypeScript</h1>
   </div>
 );
 
@@ -16,3 +16,4 @@ ReactDOM.render(<App />, document.getElementById('root'));
 if (module.hot) {
   module.hot.accept();
 }
+
