@@ -8,6 +8,11 @@
             "script": "start",
             "path": "server/",
             "problemMatcher": []
+        },
+        {
+            "type": "npm",
+            "script": "start",
+            "problemMatcher": []
         }
     ]
 }

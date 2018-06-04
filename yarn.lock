@@ -16,6 +16,10 @@
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
+"@types/json-query@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@types/json-query/-/json-query-2.2.0.tgz#4d54169ea7b88756574222bbd22c391a3cee595d"
+
 "@types/node@*":
   version "10.3.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.0.tgz#078516315a84d56216b5d4fed8f75d59d3b16cac"
@@ -2371,6 +2375,10 @@ json-parser@^1.0.0:
   resolved "https://registry.yarnpkg.com/json-parser/-/json-parser-1.1.5.tgz#e62ec5261d1a6a5fc20e812a320740c6d9005677"
   dependencies:
     esprima "^2.7.0"
+
+json-query@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/json-query/-/json-query-2.2.2.tgz#b6558b8a3794ccd217926aa38024324b77b48ab1"
 
 json5@^0.5.1:
   version "0.5.1"
