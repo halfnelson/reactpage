@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { widgets } from './registeredWidgets';
+import { sources } from './registeredDatasources';
 import * as JsonQuery from 'json-query'
+import { ICMSDatasource } from '@/registeredDatasources';
 
 export enum PropBindingType {
     Dynamic,
@@ -32,7 +34,10 @@ function createDynamicBinding(bindingExpression, context) {
     return () => resolveBindingExpression(bindingExpression, context)
 }
 
-
+export interface CMSDatasourceConfig {
+    className: string
+    config: any
+}
 
 export interface CMSComponentConfig {
     className: string
@@ -40,17 +45,33 @@ export interface CMSComponentConfig {
 }
 
 interface ICMSComponentProps {
-    context: any
+    datasource: CMSDatasourceConfig
     id: string
     children: CMSComponentConfig[]
 }
 
-
-
 export class CMSComponent extends React.Component<ICMSComponentProps, any> {
+    
+    datasource: ICMSDatasource | undefined;
+    
     constructor(props: ICMSComponentProps) {
-        super(props)
-        this.state = { bindingContext: { ...props.context } };
+        super(props);
+        var factory = sources.get(props.datasource.className);
+        if (factory) {
+            this.datasource = factory(props.datasource.config);
+            this.state = { bindingContext: this.datasource.InitialData() };
+        } else {
+            this.state = { bindingContext: null }
+        }
+    }
+
+    async componentDidMount() {
+        if (this.datasource && this.datasource.requiresFetch) {
+            var data = await this.datasource.GetData()
+            this.setState({
+                bindingContext: data
+            });
+        }
     }
 
     getBinding(bindingConfig: PropBindingConfig): Binding {
@@ -72,15 +93,15 @@ export class CMSComponent extends React.Component<ICMSComponentProps, any> {
         return props;
     }
 
-    renderChild(config: CMSComponentConfig) {
+    renderChild(config: CMSComponentConfig, idx: number) {
         var widget = widgets.get(config.className);
-        return widget ? React.createElement(widget, this.resolvePropBindings(config.propBindings)) : null
+        return widget ? React.createElement(widget, { key: idx , ...this.resolvePropBindings(config.propBindings)}) : null
     }
 
     render() {
         return (
             <div id={this.props.id}>
-                {this.props.children.map(child => this.renderChild(child))}
+                {this.props.children.map((child, i) => this.renderChild(child, i))}
             </div>
         )
     }

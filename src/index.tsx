@@ -1,9 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import './index.css';
-import { CMSComponent, CMSComponentConfig, PropBindingType } from '@/cmscomponent';
+import { CMSComponent, CMSComponentConfig, CMSDatasourceConfig, PropBindingType } from '@/cmscomponent';
 import './calltoaction'
 import './testimonial'
+import './Datasources/StaticDatasource'
 
 const images = require('./*.svg');
 
@@ -11,7 +12,7 @@ const pageContext = {
   company: {
     name: "Papilio",
     images: {
-      logoimages: [ "http://placehold.it/200x200", "https://pixabay.com/get/eb35b90c2cfd033ed1584d05fb1d4e97e07ee3d21cac104497f8c171a5e9b5ba_340.jpg" ]
+      logoimages: [ "http://placehold.it/200x200", "https://i.imgur.com/E02AGYU.jpg" ]
     },
     reviews: [
      {
@@ -24,6 +25,14 @@ const pageContext = {
    ]
   }
 }
+
+var dataConfig: CMSDatasourceConfig = {
+  className: "StaticDatasource",
+  config: {
+     data: pageContext
+  }
+}
+
 
 var callToActionConfig: CMSComponentConfig = {
   className: "CallToAction",
@@ -50,7 +59,7 @@ const App = () => (
   <div className="App">
     <img className="App-logo" src={images.logo} alt="React" />
     <h1 className="App-Title">Hello Parcel xx React x TypeScript</h1>
-    <CMSComponent id="callToAction1" context={pageContext} children={widgetConfig} />
+    <CMSComponent id="callToAction1" datasource={dataConfig} children={widgetConfig} />
     <div>After Cms Component</div>
   </div>
 );

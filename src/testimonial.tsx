@@ -4,7 +4,7 @@ import { widgets } from './registeredWidgets';
 export const Testimonial = ({rating, blurb}) => {
   var ratings:any[] = []
   for (var j=0; j < rating; j++) {
-     ratings.push(<span>*</span>)
+     ratings.push(<span key={j}>*</span>)
   }
   
   return (
