@@ -44,35 +44,68 @@ export interface CMSComponentConfig {
     propBindings: PropBindingConfig[]
 }
 
+type ContextData = {[index: string]: any }
+
 interface ICMSComponentProps {
-    datasource: CMSDatasourceConfig
+   // datasource: CMSDatasourceConfig
+    componentContext?: ContextData
     id: string
     children: CMSComponentConfig[]
 }
 
+
+
+interface ICMSComponentContext {
+    data: ContextData
+    updateContext(newData: any): void
+}
+
+
+
+export const CMSComponentContext = React.createContext<ICMSComponentContext>({
+    data: {},
+    updateContext: (newData: ContextData) => {}
+})
+
+
+
 export class CMSComponent extends React.Component<ICMSComponentProps, any> {
     
-    datasource: ICMSDatasource | undefined;
-    
+    //datasource: ICMSDatasource | undefined;
+    updateComponentContext:(newData: ContextData) => void
+   
+
     constructor(props: ICMSComponentProps) {
         super(props);
-        var factory = sources.get(props.datasource.className);
-        if (factory) {
-            this.datasource = factory(props.datasource.config);
-            this.state = { bindingContext: this.datasource.InitialData() };
-        } else {
-            this.state = { bindingContext: null }
-        }
-    }
 
-    async componentDidMount() {
-        if (this.datasource && this.datasource.requiresFetch) {
-            var data = await this.datasource.GetData()
-            this.setState({
-                bindingContext: data
-            });
+        this.updateComponentContext = (newData: ContextData) => {
+            this.setState((prevState, _) => ({ data: { ...prevState.data, ...newData } }))
+        }
+        
+        this.state = {
+            updateContext: this.updateComponentContext,
+            data: props.componentContext ? { ...props.componentContext.data } : {}
         }
     }
+      //  var factory = sources.get(props.datasource.className);
+    //   // if (factory) {
+       //     this.datasource = factory(props.datasource.config);
+       //     this.state = { bindingContext: this.datasource.InitialData() };
+       // } else {
+       //     this.state = { bindingContext: null }
+       // }
+  //  }
+
+  //  async componentDidMount() {
+    //    if (this.datasource && this.datasource.requiresFetch) {
+     //       var data = await this.datasource.GetData()
+     //       this.setState({
+     //           bindingContext: data
+     //       });
+     //   }
+   // }
+
+  
 
     getBinding(bindingConfig: PropBindingConfig): Binding {
         switch (bindingConfig.type) {
@@ -80,7 +113,7 @@ export class CMSComponent extends React.Component<ICMSComponentProps, any> {
                 return createStaticBinding(bindingConfig.bindingExpression)
             }
             case PropBindingType.Dynamic: {
-                return createDynamicBinding(bindingConfig.bindingExpression, this.state.bindingContext)
+                return createDynamicBinding(bindingConfig.bindingExpression, this.state.data)
             }
         }
     }
@@ -101,7 +134,9 @@ export class CMSComponent extends React.Component<ICMSComponentProps, any> {
     render() {
         return (
             <div id={this.props.id}>
+                <CMSComponentContext.Provider value={this.state as ICMSComponentContext}>
                 {this.props.children.map((child, i) => this.renderChild(child, i))}
+                </CMSComponentContext.Provider>
             </div>
         )
     }
