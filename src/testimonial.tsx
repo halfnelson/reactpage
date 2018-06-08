@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { widgets } from './registeredWidgets';
+import { widgets } from '@/lib/registeredWidgets';
 
 export const Testimonial = ({rating, blurb}) => {
   var ratings:any[] = []
