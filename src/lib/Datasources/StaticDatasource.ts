@@ -9,16 +9,9 @@ interface IStaticDatasourceProps {
 } 
 
 export class StaticDatasource extends React.Component<IStaticDatasourceProps>{
-    
-    constructor(props: IStaticDatasourceProps) {
-        console.log("constructed")
-        super(props)
-    }
 
     async componentDidMount() {
-        console.log("mounted")
-        await new Promise(resolve=> {setTimeout(resolve, 1000)})
-        console.log("propped")
+        await new Promise(resolve=> {setTimeout(resolve, 1)})
         this.props.componentContext.updateContext({[this.props.name]: this.props.data })
     }
 

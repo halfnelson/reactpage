@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { CMSComponent, CMSComponentConfig } from '@/lib/cmscomponent';
 import { PropBindingType } from  "@/lib/propbindinghelper"
 import '@/lib/Datasources/StaticDatasource'
+import '@/lib/Datasources/IndexedDatasource'
 
 import './index.css';
 import './calltoaction'
@@ -44,6 +45,16 @@ var datasourceConfig: CMSComponentConfig = {
     ]
 }
 
+var indexedDSConfig: CMSComponentConfig = {
+  className: "IndexedDatasource",
+  propBindings: [
+    sbind("name", "selectedReviewData"),
+    bind("data", "company.reviews"),
+    bind("index", "selectedReview")
+  ]
+}
+
+
 var callToActionConfig: CMSComponentConfig = {
   className: "CallToAction",
   propBindings: [
@@ -55,22 +66,30 @@ var callToActionConfig: CMSComponentConfig = {
 var testimonialConfig: CMSComponentConfig = {
   className: "Testimonial",
   propBindings: [
-    bind("rating","company.reviews[rating<3].rating"),
-    bind("blurb","company.reviews[rating<3].text")
+    bind("rating","selectedReviewData.rating"),
+    bind("blurb","selectedReviewData.text")
   ]
 }
 
 const widgetConfig = [
   datasourceConfig,
+  indexedDSConfig,
   callToActionConfig,
   testimonialConfig
 ]
+
+var initialContext = {
+   data: {
+      selectedReview: 0
+   },
+   updateContext: (d) => {}
+}
 
 const App = () => (
   <div className="App">
     <img className="App-logo" src={images.logo} alt="React" />
     <h1 className="App-Title">Hello Parcel xx React x TypeScript</h1>
-    <CMSComponent id="callToAction1" children={widgetConfig} />
+    <CMSComponent id="callToAction1" children={widgetConfig} componentContext={initialContext} />
     <div>After Cms Component</div>
   </div>
 );

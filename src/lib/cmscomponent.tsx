@@ -22,15 +22,12 @@ export class CMSComponent extends React.Component<ICMSComponentProps, ICMSCompon
         super(props);
 
         this.updateComponentContext = (newData: ContextData) => {
-            console.log("Component context", newData);
             this.setState(prevState => {
-                //update our local data
                 var newstate = { data: { 
                     ...prevState.data, 
                     ...newData
                     }
                 }
-                console.log("new state",newstate);
                 return newstate;
             });
         }
