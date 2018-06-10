@@ -20,7 +20,9 @@ CmsComponent: {
 }
 
 
+Editor:
 
+maybe lean on https://github.com/mozilla-services/react-jsonschema-form ?
 
 
 

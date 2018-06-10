@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {  CMSComponentConfig, CmsComponentFromId, CMSComponentContextContainer } from '@/lib/cmscomponent';
+import {  ICmsComponentConfig } from '@/lib/cmscomponent';
 import { PropBindingType } from  "@/lib/propbindinghelper"
 import '@/lib/Datasources/StaticDatasource'
 import '@/lib/Datasources/IndexedDatasource'
@@ -8,7 +8,8 @@ import '@/lib/Datasources/IndexedDatasource'
 import './index.css';
 import './calltoaction'
 import './testimonial'
-import { ICMSComponentContext } from '@/lib/cmscomponentcontext';
+import { ICmsComponentContext, CmsComponentContextContainer } from '@/lib/cmscomponentcontext';
+import { CmsComponentSlot } from '@/lib/cmscomponentslot';
 
 const images = require('./*.svg');
 
@@ -38,7 +39,21 @@ function sbind(propertyName: string, value: any) {
   return { propertyName: propertyName, type: PropBindingType.Static,  bindingExpression: value }
 }
 
-var datasourceConfig: CMSComponentConfig = {
+var nonVisibleComponentsConfig: ICmsComponentConfig = {
+    className: "CmsComponentList",
+    propBindings: [
+        sbind("childComponentIds",["staticDatasource1","indexDatasource1"])
+    ]
+}
+var layoutConfig: ICmsComponentConfig = {
+    className: "CmsComponentList",
+    propBindings: [
+        sbind("childComponentIds",["callToActionConfig1","testimonialConfig1"])
+    ]
+}
+
+
+var datasourceConfig: ICmsComponentConfig = {
     className: "StaticDatasource",
     propBindings: [
       bind("setData","setData"),
@@ -47,7 +62,7 @@ var datasourceConfig: CMSComponentConfig = {
     ]
 }
 
-var indexedDSConfig: CMSComponentConfig = {
+var indexedDSConfig: ICmsComponentConfig = {
   className: "IndexedDatasource",
   propBindings: [
     bind("setData","setData"),
@@ -58,7 +73,7 @@ var indexedDSConfig: CMSComponentConfig = {
 }
 
 
-var callToActionConfig: CMSComponentConfig = {
+var callToActionConfig: ICmsComponentConfig = {
   className: "CallToAction",
   propBindings: [
     bind("title", "data.company.name"),
@@ -68,7 +83,7 @@ var callToActionConfig: CMSComponentConfig = {
   ]
 }
 
-var testimonialConfig: CMSComponentConfig = {
+var testimonialConfig: ICmsComponentConfig = {
   className: "Testimonial",
   propBindings: [
     bind("rating","data.selectedReviewData.rating"),
@@ -76,18 +91,13 @@ var testimonialConfig: CMSComponentConfig = {
   ]
 }
 
-const widgetConfig = [
-  datasourceConfig,
-  indexedDSConfig,
-  callToActionConfig,
-  testimonialConfig
-]
-
-var initialContext: ICMSComponentContext = {
+var initialContext: ICmsComponentContext = {
    data: {
-      selectedReview: 0
+      selectedReview: 0,
    },
    componentConfig: {
+     "slot/dataComponents": nonVisibleComponentsConfig, // or use cmscomponentbyid as a ref component
+     "slot/main": layoutConfig,
      "staticDatasource1": datasourceConfig,
      "indexDatasource1": indexedDSConfig,
      "callToActionConfig1": callToActionConfig,
@@ -97,18 +107,15 @@ var initialContext: ICMSComponentContext = {
 }
 
 const App = () => (
+  <CmsComponentContextContainer baseContext={initialContext}>
   <div className="App">
-    <img className="App-logo" src={images.logo} alt="React" />
-    <h1 className="App-Title">Hello Parcel xx React x TypeScript</h1>
-    <CMSComponentContextContainer baseContext={initialContext}>
-       <CmsComponentFromId componentId="staticDatasource1" />
-       <CmsComponentFromId componentId="indexDatasource1" />
-       <CmsComponentFromId componentId="callToActionConfig1" />
-       <CmsComponentFromId componentId="testimonialConfig1" />
-    </CMSComponentContextContainer>
-    
-    <div>After Cms Component</div>
+   
+      <CmsComponentSlot slotId="dataComponents"/>
+      <CmsComponentSlot slotId="main">
+        <h3>Layout Goes Here</h3>
+      </CmsComponentSlot>
   </div>
+  </CmsComponentContextContainer>
 );
 
 ReactDOM.render(<App />, document.getElementById('root'));

@@ -1,4 +1,4 @@
-import { ICMSComponentContext } from "../cmscomponentcontext";
+import { ICmsComponentContext } from "../cmscomponentcontext";
 import React = require("react");
 import { widgets } from '../registeredWidgets';
 
