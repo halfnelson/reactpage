@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { CMSComponent, CMSComponentConfig } from '@/lib/cmscomponent';
+import {  CMSComponentConfig, CmsComponentFromId, CMSComponentContextContainer } from '@/lib/cmscomponent';
 import { PropBindingType } from  "@/lib/propbindinghelper"
 import '@/lib/Datasources/StaticDatasource'
 import '@/lib/Datasources/IndexedDatasource'
@@ -8,6 +8,7 @@ import '@/lib/Datasources/IndexedDatasource'
 import './index.css';
 import './calltoaction'
 import './testimonial'
+import { ICMSComponentContext } from '@/lib/cmscomponentcontext';
 
 const images = require('./*.svg');
 
@@ -40,6 +41,7 @@ function sbind(propertyName: string, value: any) {
 var datasourceConfig: CMSComponentConfig = {
     className: "StaticDatasource",
     propBindings: [
+      bind("setData","setData"),
       sbind("name", "company"),
       sbind("data", pageContext.company)
     ]
@@ -48,9 +50,10 @@ var datasourceConfig: CMSComponentConfig = {
 var indexedDSConfig: CMSComponentConfig = {
   className: "IndexedDatasource",
   propBindings: [
+    bind("setData","setData"),
     sbind("name", "selectedReviewData"),
-    bind("data", "company.reviews"),
-    bind("index", "selectedReview")
+    bind("data", "data.company.reviews"),
+    bind("index", "data.selectedReview")
   ]
 }
 
@@ -58,16 +61,18 @@ var indexedDSConfig: CMSComponentConfig = {
 var callToActionConfig: CMSComponentConfig = {
   className: "CallToAction",
   propBindings: [
-    bind("title", "company.name"),
-    bind("imageUrl", "company.images.logoimages[1]")
+    bind("title", "data.company.name"),
+    bind("imageUrl", "data.company.images.logoimages[1]"),
+    bind("selectedReview", "data.selectedReview"),
+    bind("setData", "setData")
   ]
 }
 
 var testimonialConfig: CMSComponentConfig = {
   className: "Testimonial",
   propBindings: [
-    bind("rating","selectedReviewData.rating"),
-    bind("blurb","selectedReviewData.text")
+    bind("rating","data.selectedReviewData.rating"),
+    bind("blurb","data.selectedReviewData.text")
   ]
 }
 
@@ -78,18 +83,30 @@ const widgetConfig = [
   testimonialConfig
 ]
 
-var initialContext = {
+var initialContext: ICMSComponentContext = {
    data: {
       selectedReview: 0
    },
-   updateContext: (d) => {}
+   componentConfig: {
+     "staticDatasource1": datasourceConfig,
+     "indexDatasource1": indexedDSConfig,
+     "callToActionConfig1": callToActionConfig,
+     "testimonialConfig1": testimonialConfig,
+   },
+   setData: (name,data) => {}
 }
 
 const App = () => (
   <div className="App">
     <img className="App-logo" src={images.logo} alt="React" />
     <h1 className="App-Title">Hello Parcel xx React x TypeScript</h1>
-    <CMSComponent id="callToAction1" children={widgetConfig} componentContext={initialContext} />
+    <CMSComponentContextContainer baseContext={initialContext}>
+       <CmsComponentFromId componentId="staticDatasource1" />
+       <CmsComponentFromId componentId="indexDatasource1" />
+       <CmsComponentFromId componentId="callToActionConfig1" />
+       <CmsComponentFromId componentId="testimonialConfig1" />
+    </CMSComponentContextContainer>
+    
     <div>After Cms Component</div>
   </div>
 );

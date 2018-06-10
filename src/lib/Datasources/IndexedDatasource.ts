@@ -1,9 +1,10 @@
 import { ICMSComponentContext } from "../cmscomponentcontext";
 import React = require("react");
 import { widgets } from '../registeredWidgets';
+import { METHODS } from "http";
 
 interface IIndexedDatasourceProps {
-    componentContext: ICMSComponentContext
+    setData(name: string, newData: any): void
     data: any
     index: any
     name: string
@@ -25,7 +26,7 @@ export class IndexedDatasource extends React.Component<IIndexedDatasourceProps>{
         var index = this.props.index;
         try {
             var val = data ? data[index] : {}
-            this.props.componentContext.updateContext({[this.props.name]: val })
+            this.props.setData(this.props.name, val)
         } catch {           
         }
     }

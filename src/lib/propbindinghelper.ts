@@ -13,7 +13,7 @@ export interface PropBindingConfig {
 
 type Binding = () => any
 
-function resolveBindingExpression(bindingExpression: string, context: any) {
+export function resolveBindingExpression(bindingExpression: string, context: any) {
     var result = JsonQuery(bindingExpression,{
         data: context
     })
