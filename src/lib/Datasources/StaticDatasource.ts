@@ -1,6 +1,6 @@
 import { ICmsComponentContext } from "../cmscomponentcontext";
 import React = require("react");
-import { widgets } from '../registeredWidgets';
+import { componentRegistry } from '../cmscomponentregistry';
 
 interface IStaticDatasourceProps {
     setData(name: string, newData: any): void
@@ -20,4 +20,4 @@ export class StaticDatasource extends React.Component<IStaticDatasourceProps>{
     }
 }
 
-widgets.add("StaticDatasource", StaticDatasource)
+componentRegistry.register("StaticDatasource", StaticDatasource)

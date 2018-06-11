@@ -1,6 +1,6 @@
 import { ICmsComponentContext } from "../cmscomponentcontext";
 import React = require("react");
-import { widgets } from '../registeredWidgets';
+import { componentRegistry } from '../cmscomponentregistry';
 import { METHODS } from "http";
 
 interface IIndexedDatasourceProps {
@@ -41,4 +41,4 @@ export class IndexedDatasource extends React.Component<IIndexedDatasourceProps>{
     }
 }
 
-widgets.add("IndexedDatasource", IndexedDatasource)
+componentRegistry.register("IndexedDatasource", IndexedDatasource)

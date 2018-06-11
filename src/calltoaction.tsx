@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { widgets } from '@/lib/registeredWidgets';
+import { componentRegistry } from '@/lib/cmscomponentregistry';
 
 export const CallToAction = ({title, imageUrl, setData, selectedReview}) => (
     <div className="call-to-action">
@@ -8,4 +8,4 @@ export const CallToAction = ({title, imageUrl, setData, selectedReview}) => (
     </div>
   )
 
-widgets.add("CallToAction", CallToAction)
+componentRegistry.register("CallToAction", CallToAction)

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { widgets } from './registeredWidgets';
+import { componentRegistry } from './cmscomponentregistry';
 import { resolvePropBindings, PropBindingConfig } from './propbindinghelper';
 
 export interface ICmsComponentConfig {
@@ -22,9 +22,9 @@ export function BoundReactComponent({componentClass, propBindings, bindingContex
 function ResolveComponentClass(wrappedComponent) {
     return function({ componentClassName, ...props }) {
         if (!componentClassName) return null;
-        var widget = widgets.get(componentClassName);
-        if (!widget) return null;
-        return wrappedComponent({ ...props, componentClass: widget })
+        var componentClass = componentRegistry.get(componentClassName);
+        if (!componentClass) return null;
+        return wrappedComponent({ ...props, componentClass: componentClass })
     }
 }
 

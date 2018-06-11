@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { widgets } from '@/lib/registeredWidgets';
+import { componentRegistry } from '@/lib/cmscomponentregistry';
 
 export const Testimonial = ({rating, blurb}) => {
   var ratings:any[] = []
@@ -15,4 +15,4 @@ export const Testimonial = ({rating, blurb}) => {
   )
 }
 
-widgets.add("Testimonial", Testimonial)
+componentRegistry.register("Testimonial", Testimonial)

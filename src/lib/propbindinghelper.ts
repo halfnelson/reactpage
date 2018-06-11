@@ -20,15 +20,6 @@ export function resolveBindingExpression(bindingExpression: string, context: any
     return result.value
 }
 
-/*
-function createStaticBinding(bindingExpression: any) {
-    return () => bindingExpression;
-}
-
-function createDynamicBinding(bindingExpression, context) {
-    return () => resolveBindingExpression(bindingExpression, context)
-}
-*/
 function getBinding(bindingConfig: PropBindingConfig, context: any): Binding {
     switch (bindingConfig.type) {
         case PropBindingType.Static: {
