@@ -1,3 +1,5 @@
+import * as React from "react"
+
 class ComponentRegistry  {
     components: Map<string, React.ComponentType<any>> = new Map()
 

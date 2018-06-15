@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { CmsComponentContext, ICmsComponentContext } from "./cmscomponentcontext";
-import { CmsComponentFromConfig } from "./cmscomponent";
+import { CmsComponentContext, ICmsComponentContext } from "./CmsComponentContext";
+import { CmsComponentFromConfig } from "./CmsComponent";
 
 export function CmsComponentFromSlot({slotId, componentContext, ...props} : {slotId: string, componentContext: ICmsComponentContext }) {
     if (!slotId) return null;

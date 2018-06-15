@@ -32,9 +32,10 @@ function getBinding(bindingConfig: PropBindingConfig, context: any): Binding {
 }
 
 export function resolvePropBindings(propBindings: PropBindingConfig[], context: any): any {
-    var props = {}
+    var props:{[index: string]: any} = {}
     propBindings.forEach(propBinding => {
         props[propBinding.propertyName] = getBinding(propBinding, context)()
     });
     return props;
 }
+

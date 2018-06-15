@@ -1,7 +1,4 @@
-import { ICmsComponentContext } from "../cmscomponentcontext";
-import React = require("react");
-import { componentRegistry } from '../cmscomponentregistry';
-import { METHODS } from "http";
+import * as React from "react";
 
 interface IIndexedDatasourceProps {
     setData(name: string, newData: any): void
@@ -36,9 +33,8 @@ export class IndexedDatasource extends React.Component<IIndexedDatasourceProps>{
         this.updateContext();
     }
 
-    render() {
+    render(): JSX.Element {
         return null
     }
 }
 
-componentRegistry.register("IndexedDatasource", IndexedDatasource)

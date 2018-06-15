@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "baseUrl": "./src/docs",
+      "outDir": "./dist/docs",
+      "sourceMap": true,
+      "noImplicitAny": true,
+      "module": "es6",
+      "target": "es5",
+      "jsx": "react",
+      "lib": ["es5", "es6", "dom"],
+      "allowJs": true,
+      "forceConsistentCasingInFileNames": true,
+      "allowSyntheticDefaultImports": true
+    },
+    "exclude": [
+        "dist/docs"
+    ]
+  }

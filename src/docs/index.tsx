@@ -1,21 +1,18 @@
+/// <reference path="cms.d.ts"/>
 import './index.css';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { CmsComponentContextContainer } from '@/lib/cmscomponentcontext';
-import { CmsComponentSlot } from '@/lib/cmscomponentslot';
+import * as Cms from "cms";
 
+const { CmsComponentSlot, CmsComponentContextContainer } = Cms;
 
 import { initialContext } from "./initialcontext"
 
-import '@/lib/Datasources/StaticDatasource'
-import '@/lib/Datasources/IndexedDatasource'
 import './calltoaction'
 import './testimonial'
-import { test } from '@/test';
 
-test();
 
 const App = () => (
   <CmsComponentContextContainer baseContext={initialContext}>
@@ -32,7 +29,7 @@ const App = () => (
 ReactDOM.render(<App />, document.getElementById('root'));
 
 //Hot Module Replacement
-if (module.hot) {
-  module.hot.accept();
-}
+//if (module.hot) {
+ // module.hot.accept();
+//}
 

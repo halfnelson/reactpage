@@ -1,6 +1,4 @@
-import { ICmsComponentContext } from "../cmscomponentcontext";
-import React = require("react");
-import { componentRegistry } from '../cmscomponentregistry';
+import * as React from "react";
 
 interface IStaticDatasourceProps {
     setData(name: string, newData: any): void
@@ -15,9 +13,8 @@ export class StaticDatasource extends React.Component<IStaticDatasourceProps>{
         this.props.setData(this.props.name, this.props.data)
     }
 
-    render() {
+    render(): JSX.Element {
         return null
     }
 }
 
-componentRegistry.register("StaticDatasource", StaticDatasource)

@@ -1,11 +1,22 @@
 {
     "compilerOptions": {
-      "outDir": "./dist/",
+      "outDir": "./dist/lib",
       "sourceMap": true,
       "noImplicitAny": true,
       "module": "es6",
       "target": "es5",
       "jsx": "react",
-      "allowJs": true
-    }
+      "lib": ["es5", "es6", "dom"],
+      "allowJs": true,
+      "forceConsistentCasingInFileNames": true,
+      "moduleResolution": "node"
+    },
+    "include": [
+      "src/lib"
+    ],
+    "exclude": [
+      "src/docs",
+      "dist",
+      "node_modules"
+    ]
   }

@@ -1,6 +1,5 @@
-import React = require("react");
-import { ICmsComponentConfig, CmsComponentFromConfig } from "./cmscomponent";
-import { componentRegistry } from "./cmscomponentregistry";
+import * as React from "react";
+import { ICmsComponentConfig, CmsComponentFromConfig } from "./CmsComponent";
 
 export type ContextData = {[index: string]: any }
 
@@ -65,8 +64,6 @@ export function CmsComponentFromId( props: { componentId: string }) {
     )
 }
 
-componentRegistry.register("CmsComponentFromId", CmsComponentFromId)
-
 export function CmsComponentList({childComponentIds, ...props}: {childComponentIds: string[]}) {
     if (!childComponentIds || childComponentIds.length==0) return null;
     return (
@@ -76,4 +73,3 @@ export function CmsComponentList({childComponentIds, ...props}: {childComponentI
     )
 }
 
-componentRegistry.register("CmsComponentList", CmsComponentList)

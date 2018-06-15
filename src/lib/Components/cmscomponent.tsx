@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { componentRegistry } from './cmscomponentregistry';
-import { resolvePropBindings, PropBindingConfig } from './propbindinghelper';
+import { componentRegistry } from '../Components/CmsComponentRegistry';
+import { resolvePropBindings, PropBindingConfig } from '../Helpers/PropBindingHelper';
 
 export interface ICmsComponentConfig {
     className: string
@@ -19,8 +19,8 @@ export function BoundReactComponent({componentClass, propBindings, bindingContex
     return ReactComponent({componentClass: componentClass, props: {key: key, ...resolvedProps}, children: children});
 }
 
-function ResolveComponentClass(wrappedComponent) {
-    return function({ componentClassName, ...props }) {
+function ResolveComponentClass(wrappedComponent: React.SFC<{[index: string]: any}>) {
+    return function({ componentClassName, ...props }:{[index: string]: any}) {
         if (!componentClassName) return null;
         var componentClass = componentRegistry.get(componentClassName);
         if (!componentClass) return null;
@@ -29,7 +29,7 @@ function ResolveComponentClass(wrappedComponent) {
 }
 
 export const CmsComponent = ResolveComponentClass(BoundReactComponent);
-export const StaticCmsComponent = ResolveComponentClass(ReactComponent);
+export const CmsStaticComponent = ResolveComponentClass(ReactComponent);
 
 export function CmsComponentFromConfig({ config, bindingContext, ...props }: { config: ICmsComponentConfig, bindingContext: any }) {
     if (!config) return null;
