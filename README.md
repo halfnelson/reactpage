@@ -1,74 +1,45 @@
-# React Parcel Example
+# myUI
 
-A minimum viable React app with [Parcel Bundler](https://parceljs.org)
+Example on how to build your own UI components library and showcase it in the same code structure. Check the medium article.
 
-**What's inside?**
+## Getting Started
 
-* `parcel-bundler`
-* `react`
-* `react-dom`
-* `babel-preset-react-app`
-* `autoprefixer`
-
-## Getting started
-
-Clone and install deps
+### Installing
 
 ```
-git clone git@github.com:jaredpalmer/react-parcel-example.git
-cd react-parcel-example
 yarn
-yarn start
 ```
 
-Then open `http://localhost:1234` and edit `index.js` and press save. Parcel
-will automagically hot reload you files whenever you make changes.
+## Building
 
-## Building for Production
+To build the library:
 
-```
-npm run build
-```
+`yarn build`
 
-This will compile your JS and copy your `index.html` to the `dist` folder which
-you can deploy wherever as a good ol' webpage.
+To build the docs:
 
-## CSS
+`yarn build:docs`
 
-[Parcel uses PostCSS plugins to manage CSS assets](https://parceljs.org/transforms.html#postcss).
-I've included `autoprefixer` for vendor prefixing with the same setup as
-`create-react-app`. You can find and modify the PostCSS setup in `package.json`.
-If you'd rather keep your PostCSS setup in a dotfile, you can delete the
-`postcss` key from `package.json`, and place its contents in a `.postcssrc` file
-too.
+## Running
 
-## Folder structure and relative paths
+To start the documentation where you can show case the elements from lib:
 
-Keeping everything in the root directory obviously won't scale past a point.
-Parcel is very flexible about folder structure, but there are a few gotchas.
+`yarn start`
 
-### Moving JS entry
+## Built With
 
-When you do move index.js just make sure to update the `<script>` tag in
-`index.html` so that it points to the correct relative path.
+* [Webpack 4](https://webpack.js.org/) - For building the library
+* [Parcel Bundler](https://parceljs.org/) - For building the docs
+* React
 
-For example, if you want to move `index.js` to `src/index.js`, you would need
-make the following change to `index.html`:
+## Contributing
 
-```
-<   <script src="./index.js"></script>
----
->   <script src="./src/index.js"></script>
-```
+All PR's are welcome.
 
-### Moving `index.html`
+## Authors
 
-If you want to move `index.html`, you will need to update your npm scripts in
-`package.json` with the new relative path.
+* **Pedro Madruga** - [twitter](https://twitter.com/thepedromadruga)
 
-## Deployment
+## License
 
-Refer to the deployment guide in `create-react-app`, just note that you will
-need to account for the fact that Parcel builds out to a `dist` directory, while
-CRA builds to a `build` directory. You can make it identical by adding
-`--out-dir build` to both `start` and `build` npm tasks in `package.json`.
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details

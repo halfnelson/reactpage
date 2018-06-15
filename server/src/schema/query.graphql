@@ -1,7 +1,0 @@
-type Query {
-  companies: [Company]
-  company(id: Int!): Company
-  centre(id: Int!): Centre
-  image(path: String): Image
-  _component(id: Int!): CmsComponent
-}
