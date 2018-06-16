@@ -4,12 +4,11 @@
   "description": "client side cms component library",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/parcel src/docs/index.html",
-    "build": "npm run build:js && npm run build:dts && shx cp ./dist/lib/* src/docs/",
+    "build": "npm run build:js && npm run build:dts",
     "build:dts": "tsc --emitDeclarationOnly --declaration --allowJs false --module amd --outfile ./dist/lib/cms.js",
     "build:js": "webpack --mode=production",
-    "build:docs": "webpack --config=./src/docs/webpack.config.js",
-    "serve:docs": "cd src/docs && webpack-dev-server"
+    "build:docs": "webpack --config=./src/docs/webpack.config.js --mode=production",
+    "start:docs": "cd src/docs && webpack-dev-server"
   },
   "author": "David Pershouse",
   "license": "MIT",
