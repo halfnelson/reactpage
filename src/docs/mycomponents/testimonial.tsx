@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { componentRegistry } from '@/lib/cmscomponentregistry';
+import { componentRegistry } from 'cms';
 
-export const Testimonial = ({rating, blurb}) => {
+export const Testimonial = ({rating, blurb}:{rating: number, blurb: string}) => {
   var ratings:any[] = []
   for (var j=0; j < rating; j++) {
      ratings.push(<span key={j}>*</span>)

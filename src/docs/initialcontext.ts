@@ -1,7 +1,6 @@
-
-
 import * as Cms from 'cms';
-const { ICmsComponentConfig, PropBindingType , ICmsComponentContext } = Cms;
+import { ICmsComponentConfig, ICmsComponentContext } from 'cms';
+const { PropBindingType} = Cms;
 
     const pageContext = {
     company: {

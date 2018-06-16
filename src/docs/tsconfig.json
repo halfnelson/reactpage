@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-      "baseUrl": "./src/docs",
+      "baseUrl": "./",
       "outDir": "./dist/docs",
       "sourceMap": true,
       "noImplicitAny": true,
@@ -10,9 +10,15 @@
       "lib": ["es5", "es6", "dom"],
       "allowJs": true,
       "forceConsistentCasingInFileNames": true,
-      "allowSyntheticDefaultImports": true
+      "allowSyntheticDefaultImports": true,
+      "paths": {
+        "cms": [
+          "dist/lib/cms"
+        ]
+      }
     },
     "exclude": [
-        "dist/docs"
+        "./dist/lib",
+        "./src/lib"
     ]
   }
