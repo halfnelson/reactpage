@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   mode: "development",
@@ -35,5 +36,11 @@ module.exports = {
   },
   devServer: {
     contentBase: path.join(__dirname, "../../dist/docs"),
-  }
+  },
+  plugins: [
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin()
+  ]
+
+  
 };

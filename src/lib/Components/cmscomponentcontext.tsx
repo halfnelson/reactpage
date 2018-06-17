@@ -38,6 +38,8 @@ export class CmsComponentContextContainer extends React.Component<{ baseContext:
             setData: this.updateData,
             data: props.baseContext ? { ...props.baseContext.data } : {}
         }
+
+        console.log("context container created28", props.baseContext)
     }
 
     render() {
