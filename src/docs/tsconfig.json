@@ -8,7 +8,7 @@
       "target": "es5",
       "jsx": "react",
       "lib": ["es5", "es6", "dom"],
-      "allowJs": true,
+      "allowJs": false,
       "forceConsistentCasingInFileNames": true,
       "allowSyntheticDefaultImports": true,
       "paths": {

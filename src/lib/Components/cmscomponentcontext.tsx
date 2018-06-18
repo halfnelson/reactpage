@@ -1,45 +1,46 @@
-import * as React from "react";
-import { ICmsComponentConfig, CmsComponentFromConfig } from "./CmsComponent";
+import { ICmsContextStore, ContextData } from "./CmsContextStore";
 
-export type ContextData = {[index: string]: any }
+import * as React from "react";
+import { CmsComponentFromConfig } from "./CmsComponent";
+
 
 export interface ICmsComponentContext {
     data: ContextData
-    componentConfig: {[index: string]: ICmsComponentConfig }
     setData(name: string, newData: any): void
 }
 
 export const CmsComponentContext = React.createContext<ICmsComponentContext>({
     data: {},
-    componentConfig: {},
     setData: (name: string, newData: any) => {}
 })
 
-export class CmsComponentContextContainer extends React.Component<{ baseContext: ICmsComponentContext }, ICmsComponentContext> {
-    updateData:(name: string, newData: any) => void
+//exposes a context to children and updates state on change
+export class CmsComponentContextContainer extends React.Component<{ context: ICmsContextStore}, ICmsComponentContext> {
+    subscriptionDispose: () => void;
 
-    constructor(props: { baseContext: ICmsComponentContext }) {
+    constructor(props: { context:  ICmsContextStore }) {
         super(props);
-
-        this.updateData = (name: string, newData: any) => {
-            this.setState(prevState => {
-                var newstate = { 
-                    data: { 
-                        ...prevState.data, 
-                        [name]: newData
-                    }
-                }
-                return newstate;
-            });
-        }
-        
+        var context = props.context;
         this.state = {
-            componentConfig: props.baseContext ? props.baseContext.componentConfig : {},
-            setData: this.updateData,
-            data: props.baseContext ? { ...props.baseContext.data } : {}
+            setData: context.setData,
+            data: context.getCurrentContext()
         }
+    }
 
-        console.log("context container created28", props.baseContext)
+    componentDidMount() {
+        this.subscriptionDispose = this.props.context.subscribe((newstate) => {
+            console.log("got new context state", newstate);
+            this.setState(prevState => ({
+                setData: prevState.setData,
+                data: newstate
+            }))
+        });
+    }
+
+    componentWillUnmount() {
+        if (this.subscriptionDispose) {
+            this.subscriptionDispose();
+        }
     }
 
     render() {
@@ -53,7 +54,7 @@ export class CmsComponentContextContainer extends React.Component<{ baseContext:
 
 export function CmsComponentFromContext({ componentId, componentContext, ...props } : { componentId: string, componentContext: ICmsComponentContext }) {
     if (!componentId) return null;
-    var config = componentContext.componentConfig[componentId];
+    var config = componentContext.data[componentId];
     return CmsComponentFromConfig({ ...props, config: config, bindingContext: componentContext })
 }
 

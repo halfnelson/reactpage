@@ -1,5 +1,5 @@
 import * as Cms from 'cms';
-import { ICmsComponentConfig, ICmsComponentContext } from 'cms';
+import { ICmsComponentConfig, ICmsComponentContext, ContextData } from 'cms';
 const { PropBindingType} = Cms;
 
     const pageContext = {
@@ -80,17 +80,12 @@ const { PropBindingType} = Cms;
     ]
   }
   
-  export const initialContext: ICmsComponentContext = {
-     data: {
-        selectedReview: 0,
-     },
-     componentConfig: {
-       "slot/dataComponents": nonVisibleComponentsConfig, // or use cmscomponentbyid as a ref component
-       "slot/main": layoutConfig,
-       "staticDatasource1": datasourceConfig,
-       "indexDatasource1": indexedDSConfig,
-       "callToActionConfig1": callToActionConfig,
-       "testimonialConfig1": testimonialConfig,
-     },
-     setData: (name,data) => {}
+  export const initialContext: ContextData = {
+    selectedReview: 0,
+    "slot/dataComponents": nonVisibleComponentsConfig, // or use cmscomponentbyid as a ref component
+    "slot/main": layoutConfig,
+    "staticDatasource1": datasourceConfig,
+    "indexDatasource1": indexedDSConfig,
+    "callToActionConfig1": callToActionConfig,
+    "testimonialConfig1": testimonialConfig,
   }

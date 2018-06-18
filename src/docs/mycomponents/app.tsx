@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { CmsComponentSlot, CmsComponentContextContainer } from "cms"
+import { CmsComponentSlot, CmsComponentContextContainer, ICmsContextStore } from "cms"
 
 import './calltoaction'
 import './testimonial'
 
-export const App = ({ initialContext }: {[index:string]: any } ) => (
-    <CmsComponentContextContainer baseContext={ initialContext }>
+export const App = ({ initialContext }: { initialContext: ICmsContextStore } ) => (
+    <CmsComponentContextContainer context={ initialContext }>
     <div className="App">
         <CmsComponentSlot slotId="dataComponents"/>
         <CmsComponentSlot slotId="main">

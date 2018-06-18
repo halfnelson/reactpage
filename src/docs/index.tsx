@@ -5,17 +5,17 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { ICmsComponentContext } from "cms"
+import { CmsContextStore, ContextData } from "cms"
 
 import { App } from "./mycomponents/app"
 
-var mainContext :ICmsComponentContext = null;
+var mainContext :CmsContextStore = null;
 
 function render() {
   ReactDOM.render(<App initialContext={ mainContext } />, document.getElementById('root'));
 }
 
-async function loadMainContext(): Promise<ICmsComponentContext> {
+async function loadMainContext(): Promise<ContextData> {
     var fetchResult = await fetch("./home.json")
     var context = await fetchResult.json();
     console.log(JSON.stringify(context,null,4))
@@ -23,12 +23,13 @@ async function loadMainContext(): Promise<ICmsComponentContext> {
 }
 
 console.log('loading')
-loadMainContext().then((context:ICmsComponentContext) => {
-    mainContext = context;
+loadMainContext().then((context:ContextData) => {
+    mainContext = new CmsContextStore(context);
     render();
+    if (module.hot) {
+      module.hot.accept('./mycomponents/app', () => render());
+    }
 });
 
-if (module.hot) {
-  module.hot.accept('./mycomponents/app', () => render());
-}
+
 

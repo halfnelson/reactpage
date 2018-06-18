@@ -8,8 +8,8 @@
     "build:dts": "tsc --emitDeclarationOnly --declaration --allowJs false --module amd --outfile ./dist/lib/cms.js",
     "build:js": "webpack --mode=production",
     "build:docs": "webpack --config=./src/docs/webpack.config.js --mode=production",
-    "start:docs": "cd src/docs && webpack-dev-server --hotOnly",
-    "start": "concurrently --kill-others-on-fail -n lib,doc -p name \"webpack --watch --mode=development\" \"npm run start:docs\""
+    "start:docs": "cd src/docs && webpack-dev-server --hotOnly --open",
+    "start": "npm run build:js && concurrently --kill-others-on-fail -n lib,doc -p name \"webpack --watch --mode=development\" \"npm run start:docs\""
   },
   "author": "David Pershouse",
   "license": "MIT",

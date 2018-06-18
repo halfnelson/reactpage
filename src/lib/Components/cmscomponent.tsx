@@ -7,20 +7,38 @@ export interface ICmsComponentConfig {
     propBindings: PropBindingConfig[]
 }
 
-//resolves the componentClass against set of registered widgets and instances it with given props
-export function ReactComponent({componentClass, props, children}: {componentClass: React.ComponentType<any>, props: {[index: string]: any}, children?: React.ReactNode}) {
+type IReactComponentProps = {
+    componentClass: React.ComponentType<any>
+    children?: React.ReactNode[]
+}
+
+function ReactComponent({componentClass, children, ...props}: IReactComponentProps) {
    return React.createElement(componentClass, props, children)
 }
 
-export function BoundReactComponent({componentClass, propBindings, bindingContext, children, key}:  {componentClass: React.ComponentType<any>, propBindings?: PropBindingConfig[], bindingContext?: any, children?: React.ReactNode, key?: any}) {
+type IBoundReactComponentProps = {
+    componentClass: React.ComponentType<any>, 
+    propBindings?: PropBindingConfig[], 
+    bindingContext?: any, 
+}    
+
+function BoundReactComponent({componentClass, propBindings, bindingContext, ...props}:  IBoundReactComponentProps) {
     if (!componentClass) return null;
     propBindings = propBindings || [];
     var resolvedProps = resolvePropBindings(propBindings, bindingContext || {})
-    return ReactComponent({componentClass: componentClass, props: {key: key, ...resolvedProps}, children: children});
+    return ReactComponent({componentClass: componentClass, ...props, ...resolvedProps});
 }
 
-function ResolveComponentClass(wrappedComponent: React.SFC<{[index: string]: any}>) {
-    return function({ componentClassName, ...props }:{[index: string]: any}) {
+type IResolvedComponentClassProps = {
+    componentClass: React.ComponentType<any>
+}
+
+type IUnresolvedComponentClassProps = {
+    componentClassName: string
+}
+
+function ResolveComponentClass(wrappedComponent: React.SFC<IResolvedComponentClassProps>) {
+    return function({ componentClassName, ...props }: IUnresolvedComponentClassProps) {
         if (!componentClassName) return null;
         var componentClass = componentRegistry.get(componentClassName);
         if (!componentClass) return null;
@@ -33,7 +51,7 @@ export const CmsStaticComponent = ResolveComponentClass(ReactComponent);
 
 export function CmsComponentFromConfig({ config, bindingContext, ...props }: { config: ICmsComponentConfig, bindingContext: any }) {
     if (!config) return null;
-    return CmsComponent({ ...props,  componentClassName: config.className, propBindings: config.propBindings, bindingContext: bindingContext  })
+    return CmsComponent({ ...props,  componentClassName: config.className, propBindings: config.propBindings, bindingContext: bindingContext  } as IUnresolvedComponentClassProps)
 }
 
 
