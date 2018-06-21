@@ -1,17 +1,16 @@
 import * as React from 'react';
-import { CmsComponentSlot, CmsComponentContextContainer, ICmsContextStore } from "cms"
+import { CmsComponentSlot, componentRegistry, CmsComponentContext, CmsComponentFromContext } from "cms"
 
-import './calltoaction'
-import './testimonial'
 
-export const App = ({ initialContext }: { initialContext: ICmsContextStore } ) => (
-    <CmsComponentContextContainer context={ initialContext }>
+export const App = (props: any) => (
     <div className="App">
-        <CmsComponentSlot slotId="dataComponents"/>
-        <CmsComponentSlot slotId="main">
-          <h3>Layout Goes Here</h3>
-        </CmsComponentSlot>
+      <CmsComponentSlot slotId="dataComponents" />            
+      <CmsComponentSlot slotId="main">
+        <h3>Layout Goes Here</h3>
+      </CmsComponentSlot>
     </div>
-    </CmsComponentContextContainer>
-  );
+);
+
   
+
+componentRegistry.register("App", App)

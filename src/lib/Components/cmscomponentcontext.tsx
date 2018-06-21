@@ -15,12 +15,12 @@ export const CmsComponentContext = React.createContext<ICmsComponentContext>({
 })
 
 //exposes a context to children and updates state on change
-export class CmsComponentContextContainer extends React.Component<{ context: ICmsContextStore}, ICmsComponentContext> {
+export class CmsComponentContextContainer extends React.Component<{ contextStore: ICmsContextStore}, ICmsComponentContext> {
     subscriptionDispose: () => void;
 
-    constructor(props: { context:  ICmsContextStore }) {
+    constructor(props: { contextStore:  ICmsContextStore }) {
         super(props);
-        var context = props.context;
+        var context = props.contextStore;
         this.state = {
             setData: context.setData,
             data: context.getCurrentContext()
@@ -28,7 +28,7 @@ export class CmsComponentContextContainer extends React.Component<{ context: ICm
     }
 
     componentDidMount() {
-        this.subscriptionDispose = this.props.context.subscribe((newstate) => {
+        this.subscriptionDispose = this.props.contextStore.subscribe((newstate) => {
             console.log("got new context state", newstate);
             this.setState(prevState => ({
                 setData: prevState.setData,
@@ -74,5 +74,12 @@ export function CmsComponentList({childComponentIds, ...props}: {childComponentI
             { context => childComponentIds.map((id,idx)=> <CmsComponentFromContext componentId={id} componentContext={context} key={idx}/>)}
         </CmsComponentContext.Consumer>
     )
+}
+
+export function CmsContext(props: any ) {
+    //shove props into a new store/existing?
+    return (<CmsComponentContextContainer contextStore={ props.contextStore }>
+         {this.props.children}
+    </CmsComponentContextContainer>)
 }
 

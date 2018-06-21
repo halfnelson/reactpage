@@ -4,7 +4,7 @@ import { resolvePropBindings, PropBindingConfig } from '../Helpers/PropBindingHe
 
 export interface ICmsComponentConfig {
     className: string
-    propBindings: PropBindingConfig[]
+    properties: PropBindingConfig
 }
 
 type IReactComponentProps = {
@@ -18,13 +18,13 @@ function ReactComponent({componentClass, children, ...props}: IReactComponentPro
 
 type IBoundReactComponentProps = {
     componentClass: React.ComponentType<any>, 
-    propBindings?: PropBindingConfig[], 
+    propBindings?: PropBindingConfig, 
     bindingContext?: any, 
 }    
 
 function BoundReactComponent({componentClass, propBindings, bindingContext, ...props}:  IBoundReactComponentProps) {
     if (!componentClass) return null;
-    propBindings = propBindings || [];
+    propBindings = propBindings || {};
     var resolvedProps = resolvePropBindings(propBindings, bindingContext || {})
     return ReactComponent({componentClass: componentClass, ...props, ...resolvedProps});
 }
@@ -51,7 +51,7 @@ export const CmsStaticComponent = ResolveComponentClass(ReactComponent);
 
 export function CmsComponentFromConfig({ config, bindingContext, ...props }: { config: ICmsComponentConfig, bindingContext: any }) {
     if (!config) return null;
-    return CmsComponent({ ...props,  componentClassName: config.className, propBindings: config.propBindings, bindingContext: bindingContext  } as IUnresolvedComponentClassProps)
+    return CmsComponent({ ...props,  componentClassName: config.className, propBindings: config.properties, bindingContext: bindingContext  } as IUnresolvedComponentClassProps)
 }
 
 

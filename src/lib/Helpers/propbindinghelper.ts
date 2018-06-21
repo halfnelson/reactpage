@@ -1,17 +1,8 @@
 import * as JsonQuery from 'json-query'
 
-export enum PropBindingType {
-    Dynamic,
-    Static
-}
-
 export interface PropBindingConfig {
-    type: PropBindingType
-    propertyName: string
-    bindingExpression: string
+    [index: string]: any
 }
-
-type Binding = () => any
 
 export function resolveBindingExpression(bindingExpression: string, context: any) {
     var result = JsonQuery(bindingExpression,{
@@ -20,21 +11,32 @@ export function resolveBindingExpression(bindingExpression: string, context: any
     return result.value
 }
 
-function getBinding(bindingConfig: PropBindingConfig, context: any): Binding {
-    switch (bindingConfig.type) {
-        case PropBindingType.Static: {
-            return () => bindingConfig.bindingExpression;
+const BindingIndicatorStart = "{";
+const BindingIndicatorEnd = "}";
+
+///TODO: allow binding to substrings
+function resolveBinding(bindingConfig: any, context: any): any {
+    if (typeof bindingConfig == "string") {
+        //escaped binding macro
+        if (bindingConfig.startsWith(BindingIndicatorStart+BindingIndicatorStart)) {
+            return bindingConfig.substr(BindingIndicatorStart.length);
+        } 
+        //binding macro
+        else if (bindingConfig.startsWith(BindingIndicatorStart)) {
+            var bindingExpr = bindingConfig.substring(BindingIndicatorStart.length, bindingConfig.length - BindingIndicatorEnd.length)
+            return resolveBindingExpression(bindingExpr, context);
+        } else {
+            return bindingConfig;
         }
-        case PropBindingType.Dynamic: {
-            return () => resolveBindingExpression(bindingConfig.bindingExpression, context)
-        }
+    } else {
+        return bindingConfig;
     }
 }
 
-export function resolvePropBindings(propBindings: PropBindingConfig[], context: any): any {
+export function resolvePropBindings(propBindings: PropBindingConfig, context: any): any {
     var props:{[index: string]: any} = {}
-    propBindings.forEach(propBinding => {
-        props[propBinding.propertyName] = getBinding(propBinding, context)()
+    Object.keys(propBindings).forEach(propName => {
+        props[propName] = resolveBinding(propBindings[propName], context)
     });
     return props;
 }
