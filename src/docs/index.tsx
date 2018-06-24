@@ -5,38 +5,27 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { CmsApp, CmsContextStore, ICmsComponentConfig, CmsComponentContext, CmsComponentFromConfig } from "cms"
+import {  CmsContextStore,  CmsComponentContextContainer, CmsContextFromFile } from "cms"
 
-import './calltoaction'
-import './testimonial'
-import './app'
+import './mycomponents/calltoaction'
+import './mycomponents/testimonial'
+import './mycomponents/app'
 
-var mainContextStore :CmsContextStore = new CmsContextStore({});
+var mainContextStore :CmsContextStore = new CmsContextStore({ url: "http://example.com" });
 
-function render(main: ICmsComponentConfig) {
+function render() {
   ReactDOM.render(
-    <CmsApp contextStore={ mainContextStore }>
-        <CmsComponentContext.Consumer>
-          { (context) => (<CmsComponentFromConfig config={main} bindingContext={context} />) }
-        </CmsComponentContext.Consumer>
-    </CmsApp>
+    <CmsComponentContextContainer contextStore={ mainContextStore }>
+       <CmsContextFromFile contextPath="/home.json" name="home" parameters={{ url: "{url}"}} />
+    </CmsComponentContextContainer>
     , document.getElementById('root'));
 }
 
-async function loadMainComponent(): Promise<ICmsComponentConfig> {
-    var fetchResult = await fetch("./home.json")
-    var component = await fetchResult.json() as ICmsComponentConfig;
-    console.log(JSON.stringify(component,null,4))
-    return component
+render()
+if (module.hot) {
+    module.hot.accept('./mycomponents/app', () => render());
 }
 
-console.log('loading')
-loadMainComponent().then((component) => {
-    render(component);
-    if (module.hot) {
-      module.hot.accept('./mycomponents/app', () => render(component));
-    }
-});
 
 
 

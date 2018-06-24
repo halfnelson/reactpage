@@ -1,7 +1,8 @@
 import * as React from "react";
+import { ContextData } from "../Components";
 
 interface IIndexedDatasourceProps {
-    setData(name: string, newData: any): void
+    setData(partialData: ContextData): void
     data: any
     index: any
     name: string
@@ -23,7 +24,7 @@ export class IndexedDatasource extends React.Component<IIndexedDatasourceProps>{
         var index = this.props.index;
         try {
             var val = data ? data[index] : {}
-            this.props.setData(this.props.name, val)
+            this.props.setData({ [this.props.name]: val })
         } catch {           
         }
     }

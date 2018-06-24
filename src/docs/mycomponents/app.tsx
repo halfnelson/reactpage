@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { CmsComponentSlot, componentRegistry, CmsComponentContext, CmsComponentFromContext } from "cms"
+import { componentRegistry } from "cms"
 
 
 export const App = (props: any) => (
     <div className="App">
-      <CmsComponentSlot slotId="dataComponents" />            
-      <CmsComponentSlot slotId="main">
-        <h3>Layout Goes Here</h3>
-      </CmsComponentSlot>
+      {props["slot-dataComponent"]}            
+      {props["slot-main"]}
     </div>
 );
 

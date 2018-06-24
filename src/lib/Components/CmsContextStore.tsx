@@ -7,27 +7,31 @@ type IStoreSubscription = {
     callback: IStoreChangeListener;
 };
 
-type IQueuedUpdate = {
-    name: string;
-    newData: any;
-};
-
 export interface ICmsContextStore {
-    setData: (name: string, newData: any) => void;
+    setData: (partialData: ContextData) => void;
     subscribe(listener: IStoreChangeListener): () => void;
     getCurrentContext(): ContextData;
+    createChildContextStore(uniqueName: string, initialContext: ContextData): ICmsContextStore;
 }
+
+interface ContextCache {
+    data: ContextData,
+    childCaches: {[index: string]: ContextCache}
+}
+
 
 export class CmsContextStore implements ICmsContextStore {
     subscriptions: IStoreSubscription[] = [];
+    childStores: { [index: string]: ICmsContextStore } = {};
     currentContext: ContextData;
-    setData: (name: string, newData: any) => void;
-    updateQueue: IQueuedUpdate[] = [];
+    cache: ContextCache;
+    setData: (partialData: ContextData) => void;
+    updateQueue: ContextData[] = [];
     isUpdating = false;
-    constructor(initialContext: ContextData = {}) {
-        this.currentContext = initialContext;
-        //a bound version of updateData
-        this.setData = (name: string, newData: any) => { this.updateData(name, newData); };
+    constructor(initialContext: ContextData = {}, cache: ContextCache = null) {
+        this.cache = cache;
+        this.currentContext = (cache && cache.data) || initialContext;
+        this.setData = (partialData: ContextData) => { this.updateData(partialData); };
     }
     unsubscribe(subscription: IStoreSubscription) {
         var idx = this.subscriptions.indexOf(subscription);
@@ -48,10 +52,20 @@ export class CmsContextStore implements ICmsContextStore {
         var callbacks = this.subscriptions.slice();
         callbacks.forEach((subscription: IStoreSubscription) => subscription.callback(state));
     }
-    updateData(name: string, newData: any) {
-        this.updateQueue.push({ name: name, newData: newData });
-        if (this.isUpdating)
+    createChildContextStore(uniqueName: string, initialContext: ContextData = {}): ICmsContextStore {
+        var cache = this.cache && this.cache.childCaches && this.cache.childCaches[uniqueName]
+        var childStore = new CmsContextStore(initialContext, cache);
+        this.childStores[uniqueName] = childStore;
+        return childStore;
+    }
+
+    updateData(partialData: ContextData) {
+        console.log("queueing partial update");
+        this.updateQueue.push(partialData);
+        if (this.isUpdating) {
             return;
+        }
+        console.log("processing partial updates",this.updateQueue.length);
         this.isUpdating = true;
         var updateLoops = 0;
         while (this.updateQueue.length > 0) {
@@ -59,7 +73,7 @@ export class CmsContextStore implements ICmsContextStore {
             for (var update = this.updateQueue.shift(); update; update = this.updateQueue.shift()) {
                 this.currentContext = {
                     ...this.currentContext,
-                    [update.name]: update.newData
+                    ...update
                 };
                 console.log("updated context:", update);
             }

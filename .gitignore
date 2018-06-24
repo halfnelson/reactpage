@@ -62,7 +62,8 @@ typings/
 
 # production
 /build
-/dist
+/dist/lib
+/dist/docs/index.js
 
 # cache
 .cache/

@@ -1,0 +1,90 @@
+{
+    "parameters": {
+        "url": "string"
+    },
+    "data": {
+        "selectedReview": 0,
+        "root": {
+            "componentClassName": "App",
+            "properties": {
+                "slot-dataComponent": "{data.componentList1}",
+                "slot-main": "{data.componentList2}"
+            }
+        },
+        "componentList1": {
+            "componentClassName": "CmsComponentList",
+            "properties": {
+                "children": [
+                    "{data.staticDatasource1}",
+                    "{data.indexDatasource1}"
+                ]
+            }
+        },
+        "componentList2": {
+            "componentClassName": "CmsComponentList",
+            "properties": {
+                "children": [
+                    "{data.callToAction1}",
+                    "{data.testimonial}",
+                    {
+                        "componentClassName": "div",
+                        "properties": {
+                            "children": "{'url: ' & data.url}"
+                        }
+                    }
+                ]
+            }
+        },
+        "callToAction1": {
+            "componentClassName": "CallToAction",
+            "properties": {
+                "title": "{data.company.name}",
+                "imageUrl": "{data.company.images.logoimages[1]}",
+                "selectedReview": "{data.selectedReview}",
+                "setData": "{setData}"
+            }
+        },
+        "testimonial": {
+            "componentClassName": "Testimonial",
+            "properties": {
+                "rating": "{data.selectedReviewData.rating}",
+                "blurb": "{data.selectedReviewData.text}"
+            }
+        },
+        "indexDatasource1": {
+            "componentClassName": "IndexedDatasource",
+            "properties": {
+                "data": "{data.company.reviews}",
+                "index": "{data.selectedReview}",
+                "name": "selectedReviewData",
+                "setData": "{setData}"
+            }
+        },
+        "staticDatasource1": {
+            "componentClassName": "StaticDatasource",
+            "properties": {
+                "data": {
+                    "name": "Papilio",
+                    "images": {
+                        "logoimages": [
+                            "http://placehold.it/200x200",
+                            "https://i.imgur.com/E02AGYU.jpg"
+                        ]
+                    },
+                    "reviews": [
+                        {
+                            "rating": 2,
+                            "text": "rubbish"
+                        },
+                        {
+                            "rating": 5,
+                            "text": "awesome"
+                        }
+                    ]
+                },
+                "name": "company",
+                "setData": "{setData}"
+            }
+        }
+    }
+}

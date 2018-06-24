@@ -14,12 +14,11 @@
   "author": "David Pershouse",
   "license": "MIT",
   "dependencies": {
-    "@types/json-query": "^2.2.0",
     "@types/react": "^16.3.17",
     "@types/react-dom": "^16.0.6",
-    "json-query": "^2.2.2",
     "react": "^16.4.1",
-    "react-dom": "^16.4.1"
+    "react-dom": "^16.4.1",
+    "jsonata": "^1.5.4"
   },
   "peerDependencies": {},
   "devDependencies": {
