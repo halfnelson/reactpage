@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ContextData } from "../Components";
 
+
 interface IIndexedDatasourceProps {
     setData(partialData: ContextData): void
     data: any
@@ -12,7 +13,9 @@ export class IndexedDatasource extends React.Component<IIndexedDatasourceProps>{
     
     constructor(props: IIndexedDatasourceProps) {
         super(props)
+        this.updateContext();
     }
+
     componentDidUpdate(prevProps: IIndexedDatasourceProps) {
         if (this.props.data != prevProps.data || this.props.index != prevProps.index) {
             this.updateContext();

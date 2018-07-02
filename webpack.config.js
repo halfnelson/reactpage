@@ -26,6 +26,8 @@ module.exports = {
     filename: 'cms.js',
     library: 'cms',
     libraryTarget: 'umd',
+    //https://github.com/webpack/webpack/issues/6522
+    globalObject: 'typeof self !== \'undefined\' ? self : this',
     path: path.resolve(__dirname, 'dist/lib')
   }
 };

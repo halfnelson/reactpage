@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
       "baseUrl": "./",
-      "outDir": "./dist/docs",
+      "outDir": "./dist/server",
       "sourceMap": true,
       "noImplicitAny": true,
       "module": "es6",
@@ -11,15 +11,13 @@
       "allowJs": false,
       "forceConsistentCasingInFileNames": true,
       "allowSyntheticDefaultImports": true,
-      "paths": {
-        "cms": [
-          "dist/lib/cms"
-        ]
-      }
+      "moduleResolution": "node",
     },
     "exclude": [
-        "./dist/lib",
-        "./src/lib",
-        "./src/server"
-    ]
-  }
+      "./dist/lib/*",
+      "./dist/**/*",
+      "./src/lib/*",
+      "./src/docs/*",
+      "node_modules"
+   ]
+}

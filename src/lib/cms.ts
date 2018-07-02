@@ -1,7 +1,7 @@
 export * from "./Components"
 export * from "./Datasources"
 export * from "./Helpers/PropBindingHelper"
-
+export * from "./config"
 import * as Components from "./Components"
 
 // Register all the components

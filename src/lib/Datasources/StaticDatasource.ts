@@ -9,11 +9,15 @@ interface IStaticDatasourceProps {
 
 export class StaticDatasource extends React.Component<IStaticDatasourceProps>{
 
+    async fetchData() {
+        await new Promise(resolve=> {setTimeout(resolve, 1)})
+        console.log("Static DS resolved you bastards")
+        this.props.setData({ [this.props.name]: this.props.data })
+    }
+
     async componentDidMount() {
         console.log("Static DS mounted")
-        await new Promise(resolve=> {setTimeout(resolve, 1)})
-        console.log("Static DS resolved")
-        this.props.setData({ [this.props.name]: this.props.data })
+        await this.fetchData()
     }
 
     render(): JSX.Element {

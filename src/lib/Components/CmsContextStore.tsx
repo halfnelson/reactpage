@@ -12,6 +12,7 @@ export interface ICmsContextStore {
     subscribe(listener: IStoreChangeListener): () => void;
     getCurrentContext(): ContextData;
     createChildContextStore(uniqueName: string, initialContext: ContextData): ICmsContextStore;
+    
 }
 
 interface ContextCache {
@@ -54,11 +55,11 @@ export class CmsContextStore implements ICmsContextStore {
     }
     createChildContextStore(uniqueName: string, initialContext: ContextData = {}): ICmsContextStore {
         var cache = this.cache && this.cache.childCaches && this.cache.childCaches[uniqueName]
-        var childStore = new CmsContextStore(initialContext, cache);
+        var childStore = this.childStores[uniqueName] || new CmsContextStore(initialContext, cache);
         this.childStores[uniqueName] = childStore;
         return childStore;
     }
-
+   
     updateData(partialData: ContextData) {
         console.log("queueing partial update");
         this.updateQueue.push(partialData);

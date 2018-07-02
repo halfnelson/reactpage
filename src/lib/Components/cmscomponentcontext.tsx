@@ -3,8 +3,8 @@ import { ICmsContextStore, ContextData } from "./CmsContextStore";
 import * as React from "react";
 import { CmsComponentFromConfig } from "./CmsComponent";
 import { resolveBinding } from "../Helpers/PropBindingHelper";
-
-
+import { cmsConfig } from "../config"
+import * as Url from "url"
 
 export interface ICmsComponentContext {
     store: ICmsContextStore
@@ -20,7 +20,7 @@ export const CmsComponentContext = React.createContext<ICmsComponentContext>({
 
 //exposes a context to children and updates state on change
 export class CmsComponentContextContainer extends React.Component<{ contextStore: ICmsContextStore}, ICmsComponentContext> {
-    subscriptionDispose: () => void;
+    subscriptionDispose: () => void = null;
 
     constructor(props: { contextStore:  ICmsContextStore }) {
         super(props);
@@ -29,10 +29,14 @@ export class CmsComponentContextContainer extends React.Component<{ contextStore
             store: context,
             setData: context.setData,
             data: context.getCurrentContext()
-        }
+        };
+        
     }
 
-    componentDidMount() {
+    fetchData():Promise<boolean> {
+        if (this.subscriptionDispose) return 
+            Promise.resolve(true);
+        
         this.subscriptionDispose = this.props.contextStore.subscribe((newstate) => {
             console.log("got new context state", newstate);
             this.setState(prevState => ({
@@ -40,6 +44,12 @@ export class CmsComponentContextContainer extends React.Component<{ contextStore
                 data: newstate
             }))
         });
+
+        return Promise.resolve(true);
+    }
+
+    componentDidMount() {
+        this.fetchData()
     }
 
     componentWillUnmount() {
@@ -113,19 +123,18 @@ export class CmsContextFromLoader extends React.Component<ICmsContextFromLoaderP
         this.contextStore.getCurrentContext() !== this.defaultContext
     }
 
-    async fetchData():Promise<IUserContextConfig> {
-        return this.props.getContextConfig();
+    async fetchData():Promise<void> {
+        var userContextConfig = await this.props.getContextConfig();
+        var expectedParams:ContextData = {}
+        Object.keys(userContextConfig.parameters).forEach(paramName => { expectedParams[paramName] = null; })
+
+        var parameters = this.updateParameters(expectedParams, this.props.parameters)
+        this.contextStore.setData({ ...userContextConfig.data, parameters: parameters})
     }
 
     async componentDidMount() {
         if (!this.hasLoaded()) {
-           var userContextConfig = await this.props.getContextConfig();
-
-           var expectedParams:ContextData = {}
-           Object.keys(userContextConfig.parameters).forEach(paramName => { expectedParams[paramName] = null; })
-
-           var parameters = this.updateParameters(expectedParams, this.props.parameters)
-           this.contextStore.setData({ ...userContextConfig.data, parameters: parameters})
+           await this.fetchData();
         }
     }
 
@@ -172,9 +181,18 @@ interface ICmsContextFromFileProps {
 
 export class CmsContextFromFile extends React.Component<ICmsContextFromFileProps> {
     getContextFromFile: () => Promise<IUserContextConfig> = async () => {
-        var fetchResult = await fetch(this.props.contextPath)
-        var userContext = await fetchResult.json() as IUserContextConfig;
-        return userContext
+        if (this.props.contextPath) {
+            var absoluteUrl = Url.resolve(cmsConfig.CmsServerRoot, this.props.contextPath);
+            var fetchResult = await fetch(absoluteUrl)
+            var userContext = await fetchResult.json() as IUserContextConfig;
+            return userContext
+        } else {
+            return { 
+                parameters: {},
+                childComponentIds: [],
+                data: {}
+            }
+        }
     };
 
     render() {
